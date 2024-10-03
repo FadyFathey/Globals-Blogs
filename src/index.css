@@ -1,0 +1,53 @@
+/* Custom Container CSS */
+.custom-container {
+    max-width: 1200px;
+    /* Set the maximum width of the container */
+    margin-left: auto;
+    /* Center horizontally */
+    margin-right: auto;
+    /* Center horizontally */
+    padding-left: 1rem;
+    /* Add left padding */
+    padding-right: 1rem;
+    /* Add right padding */
+}
+
+/* For responsive behavior similar to Tailwind */
+@media (min-width: 640px) {
+    .custom-container {
+        max-width: 640px;
+    }
+}
+
+@media (min-width: 768px) {
+    .custom-container {
+        max-width: 768px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .custom-container {
+        max-width: 1024px;
+    }
+}
+
+@media (min-width: 1280px) {
+    .custom-container {
+        max-width: 1280px;
+    }
+}
+
+body {
+    background-color: #111827;
+    font-family: "Roboto", sans-serif;
+}
+
+a {
+    text-decoration: none;
+}
+
+input {
+    outline: none;
+    border: none;
+    background-color: transparent;
+}
