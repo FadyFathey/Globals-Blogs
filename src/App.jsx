@@ -16,7 +16,6 @@ function App() {
           <Route path="/blog" element={<BlogPage />} />
           <Route path="/all-blogs" element={<AllPostsPage />} />
         </Routes>
-
         <Footer />
       </div>
     </Router>

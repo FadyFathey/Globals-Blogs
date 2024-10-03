@@ -12,10 +12,10 @@ const Blogs = () => {
       <div className="flex flex-wrap md:flex-nowrap justify-between items-center max-w-6xl mx-auto">
         <div className="flex items-center gap-2 md:gap-3">
           <span className="text-slate-50 text-xl md:text-5xl font-bold">
-            Latest
+            Top
           </span>
           <span className="text-cyan-400 text-xl md:text-5xl font-bold">
-            Posts
+            headlines
           </span>
         </div>
 
@@ -31,7 +31,7 @@ const Blogs = () => {
       {/* End blogs heading */}
 
       {/* Start blogs card */}
-      <BLogsComp props={6} />
+      <BLogsComp size={6} />
       {/* End blogs card */}
     </section>
   );
