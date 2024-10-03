@@ -3,7 +3,8 @@ import { useNavigate } from "react-router-dom";
 import blogImg from "../../assets/blogImg.png";
 import axios from "axios";
 
-const BLogsComp = ({ size, q }) => {
+const BLogsComp = ({ size, q, currentPage }) => {
+  // Here we add currentPage as a prop
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true); // State to track loading status
   const [error, setError] = useState(null); // State to track errors or no results
@@ -13,10 +14,10 @@ const BLogsComp = ({ size, q }) => {
     setLoading(true); // Start loading
     setError(null); // Reset error state
 
-    // Construct the API URL based on search query (q) and size
-    let url = `https://newsapi.org/v2/top-headlines?country=us&pageSize=${size}&apiKey=${
-      import.meta.env.VITE_API_KEY
-    }`;
+    // Construct the API URL based on search query (q), size, and currentPage
+    let url = `https://newsapi.org/v2/top-headlines?country=us&pageSize=${size}&page=${
+      currentPage + 1
+    }&apiKey=${import.meta.env.VITE_API_KEY}`; // We use currentPage + 1 to match API's page numbering
 
     if (q) {
       url += `&q=${q}`; // Add `q` to the API request only if it has a value
@@ -41,10 +42,10 @@ const BLogsComp = ({ size, q }) => {
   };
 
   useEffect(() => {
-    getBlogs();
-  }, [q, size]); // Re-fetch when `q` or `size` changes
+    getBlogs(); // Re-fetch data when `q`, `size`, or `currentPage` changes
+  }, [q, size, currentPage]);
 
-  // Handle blog click 
+  // Handle blog click
   const handleBlogClick = (blog) => {
     navigate("/blog", { state: blog });
   };
@@ -74,10 +75,12 @@ const BLogsComp = ({ size, q }) => {
     );
   }
 
+  // Display error if any
   if (error) {
-    return <div className="text-center text-red-500">{error}</div>; // Display error message
+    return <div className="text-center text-red-500">{error}</div>;
   }
 
+  // Display the blogs
   return (
     <div className="grid gap-8 mt-[82px] sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 max-w-6xl mx-auto cursor-pointer">
       {blogs.length > 0 ? (

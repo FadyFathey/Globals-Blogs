@@ -2,9 +2,11 @@ import React, { useState } from "react";
 import Heading from "../util/Heading";
 import SubTitle from "../util/SubTitle";
 import BLogsComp from "../util/BLogsComp";
+import ReactPaginate from "react-paginate";
 
 const AllPostsPage = () => {
   const [searchQuery, setSearchQuery] = useState(""); // Single state to store the search input and trigger the search
+  const [currentPage, setCurrentPage] = useState(0); // State to track the current page
 
   // Handle the input change when the user types in the search field
   const handleSearch = (e) => {
@@ -14,6 +16,10 @@ const AllPostsPage = () => {
   // Handle the form submission to prevent the default behavior
   const handleFormSubmit = (e) => {
     e.preventDefault(); // Prevent the default form submission behavior
+  };
+
+  const handlePageClick = (event) => {
+    setCurrentPage(event.selected); // Update the current page when the user clicks a new page
   };
 
   return (
@@ -52,50 +58,6 @@ const AllPostsPage = () => {
             </svg>
           </button>
 
-          {/* Hidden dropdown menu (UI only, not connected to any functionality) */}
-          <div
-            id="dropdown"
-            className="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700"
-          >
-            <ul
-              className="py-2 text-sm text-gray-700 dark:text-gray-200"
-              aria-labelledby="dropdown-button"
-            >
-              <li>
-                <button
-                  type="button"
-                  className="inline-flex w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                >
-                  Mockups
-                </button>
-              </li>
-              <li>
-                <button
-                  type="button"
-                  className="inline-flex w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                >
-                  Templates
-                </button>
-              </li>
-              <li>
-                <button
-                  type="button"
-                  className="inline-flex w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                >
-                  Design
-                </button>
-              </li>
-              <li>
-                <button
-                  type="button"
-                  className="inline-flex w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                >
-                  Logos
-                </button>
-              </li>
-            </ul>
-          </div>
-
           {/* Search input field */}
           <div className="relative w-full">
             <input
@@ -118,8 +80,59 @@ const AllPostsPage = () => {
         </div>
       </form>
 
-      {/* Pass the searchQuery (q) and size to BLogsComp */}
-      <BLogsComp size={100} q={searchQuery} />
+      {/* Center BLogsComp */}
+      <div className="flex justify-center items-center mt-4">
+        <BLogsComp size={10} q={searchQuery} currentPage={currentPage} />
+      </div>
+
+      {/* Centered ReactPaginate */}
+      <ReactPaginate
+        breakLabel="..."
+        nextLabel={
+          <a className="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+            <span className="sr-only">Next</span>
+            <svg
+              className="w-3 h-3"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 6 10"
+            >
+              <path
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="m1 9 4-4-4-4"
+              />
+            </svg>
+          </a>
+        }
+        previousLabel={
+          <a className="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+            <span className="sr-only">Previous</span>
+            <svg
+              className="w-3 h-3"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 6 10"
+            >
+              <path
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M5 1 1 5l4 4"
+              />
+            </svg>
+          </a>
+        }
+        onPageChange={handlePageClick}
+        pageCount={10}
+        containerClassName="flex justify-center items-center mt-4" // Center the pagination
+        pageClassName="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+        activeClassName="z-10 flex items-center justify-center px-4 h-10 leading-tight text-blue-600 border border-blue-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white"
+        breakClassName="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+      />
     </section>
   );
 };
