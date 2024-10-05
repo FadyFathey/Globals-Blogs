@@ -5,21 +5,22 @@ import BLogsComp from "../util/BLogsComp";
 import ReactPaginate from "react-paginate";
 
 const AllPostsPage = () => {
-  const [searchQuery, setSearchQuery] = useState(""); // Single state to store the search input and trigger the search
+  const [searchQuery, setSearchQuery] = useState(""); // State to store the search input
   const [currentPage, setCurrentPage] = useState(0); // State to track the current page
 
   // Handle the input change when the user types in the search field
   const handleSearch = (e) => {
-    setSearchQuery(e.target.value); // Update the state directly
+    setSearchQuery(e.target.value); // Update the state directly with the new search value
   };
 
-  // Handle the form submission to prevent the default behavior
+  // Prevent the default form submission behavior
   const handleFormSubmit = (e) => {
-    e.preventDefault(); // Prevent the default form submission behavior
+    e.preventDefault(); // Prevent page refresh or submission
   };
 
+  // Handle page click for pagination
   const handlePageClick = (event) => {
-    setCurrentPage(event.selected); // Update the current page when the user clicks a new page
+    setCurrentPage(event.selected); // Set the current page to the selected page
   };
 
   return (
@@ -80,12 +81,12 @@ const AllPostsPage = () => {
         </div>
       </form>
 
-      {/* Center BLogsComp */}
+      {/* Centered BLogsComp Component */}
       <div className="flex justify-center items-center mt-4">
         <BLogsComp size={10} q={searchQuery} currentPage={currentPage} />
       </div>
 
-      {/* Centered ReactPaginate */}
+      {/* Pagination with ReactPaginate */}
       <ReactPaginate
         breakLabel="..."
         nextLabel={
@@ -126,8 +127,8 @@ const AllPostsPage = () => {
             </svg>
           </a>
         }
-        onPageChange={handlePageClick}
-        pageCount={10}
+        onPageChange={handlePageClick} // Handle page change events
+        pageCount={10} // Number of pages (change based on total results)
         containerClassName="flex justify-center items-center mt-4" // Center the pagination
         pageClassName="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
         activeClassName="z-10 flex items-center justify-center px-4 h-10 leading-tight text-blue-600 border border-blue-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white"

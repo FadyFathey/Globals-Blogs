@@ -4,12 +4,14 @@ import blogImg from "../../assets/blogImg.png";
 import axios from "axios";
 
 const BLogsComp = ({ size, q, currentPage }) => {
-  // Here we add currentPage as a prop
+  // State to manage blogs, loading, and errors
   const [blogs, setBlogs] = useState([]);
-  const [loading, setLoading] = useState(true); // State to track loading status
-  const [error, setError] = useState(null); // State to track errors or no results
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
   const navigate = useNavigate();
 
+  // Function to get blogs from the API
   const getBlogs = () => {
     setLoading(true); // Start loading
     setError(null); // Reset error state
@@ -45,7 +47,7 @@ const BLogsComp = ({ size, q, currentPage }) => {
     getBlogs(); // Re-fetch data when `q`, `size`, or `currentPage` changes
   }, [q, size, currentPage]);
 
-  // Handle blog click
+  // Handle blog click and navigation
   const handleBlogClick = (blog) => {
     navigate("/blog", { state: blog });
   };
