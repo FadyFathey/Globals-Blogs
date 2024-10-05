@@ -23,10 +23,10 @@ const NavBar = () => {
       <ul className="flex gap-[10px] md:gap-[40px] items-center">
         <li>
           <Link
-            to="/blog"
+            to="/all-blogs"
             className="text-slate-50 text-[10px] md:text-2xl font-bold"
           >
-            Blog
+            Blogs
           </Link>
         </li>
         <li>
@@ -35,14 +35,6 @@ const NavBar = () => {
             className="text-slate-50 text-[10px] md:text-2xl font-bold"
           >
             Newsletter
-          </Link>
-        </li>
-        <li>
-          <Link
-            to="/"
-            className="text-slate-50 text-[10px] md:text-2xl font-bold"
-          >
-            Twitter
           </Link>
         </li>
       </ul>
