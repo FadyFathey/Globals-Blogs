@@ -94,6 +94,10 @@ const BLogsComp = ({ size, q, currentPage, category }) => {
               className="w-full h-[300px] object-cover"
               loading="lazy"
               decoding="async"
+              onError={(e) => {
+                e.target.src =
+                  "https://cdn.pixabay.com/photo/2016/01/31/16/34/blogging-1171731_1280.jpg";
+              }}
             />
 
             <div className="p-4">
