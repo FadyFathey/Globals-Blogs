@@ -148,4 +148,4 @@ const BLogsComp = ({ size, q, currentPage, category }) => {
   );
 };
 
-export default BLogsComp;
+export default React.memo(BLogsComp);
