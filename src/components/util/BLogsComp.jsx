@@ -54,7 +54,15 @@ const BLogsComp = ({ size, q, currentPage, category }) => {
   };
 
   useEffect(() => {
-    getBlogs(); // Re-fetch data when `q`, `size`, or `currentPage` changes
+    if (q) {
+      const delayDebounceFn = setTimeout(() => {
+        getBlogs();
+      }, 1000);
+
+      return () => clearTimeout(delayDebounceFn);
+    } else {
+      getBlogs();
+    }
   }, [q, size, currentPage, category]);
 
   // Handle blog click and navigation
@@ -106,7 +114,8 @@ const BLogsComp = ({ size, q, currentPage, category }) => {
               src={
                 blog.urlToImage &&
                 blog.urlToImage.trim() !== "" &&
-                blog.urlToImage !== "null"
+                blog.urlToImage !== "null" &&
+                blog.urlToImage !== null
                   ? blog.urlToImage
                   : "https://cdn.pixabay.com/photo/2016/01/31/16/34/blogging-1171731_1280.jpg"
               }
