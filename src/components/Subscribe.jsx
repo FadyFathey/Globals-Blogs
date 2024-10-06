@@ -13,8 +13,9 @@ const Subscribe = () => {
           <br />
         </span>
         <div className="text-slate-300 text-lg md:text-xl font-normal mt-[33px]">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. <br />
-          Phasellus malesuada nisi tellus, non imperdiet nisi tempor at.
+          Subscribe to our newsletter to stay updated with our latest news.
+          <br />
+          No spam, we promise.
         </div>
       </div>
       <div className="w-full md:w-[522px] h-[70px] bg-slate-800 rounded-[30px] flex flex-row justify-center md:justify-between items-center p-4 md:p-0">

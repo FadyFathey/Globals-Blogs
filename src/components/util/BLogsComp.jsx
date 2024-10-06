@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import blogImg from "../../assets/blogImg.png";
 import axios from "axios";
 
-const BLogsComp = ({ size, q, currentPage }) => {
+const BLogsComp = ({ size, q, currentPage, category }) => {
   // State to manage blogs, loading, and errors
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -24,7 +24,9 @@ const BLogsComp = ({ size, q, currentPage }) => {
     if (q) {
       url += `&q=${q}`; // Add `q` to the API request only if it has a value
     }
-
+    if (category) {
+      url += `&category=${category}`;
+    }
     axios
       .get(url)
       .then((res) => {
@@ -41,11 +43,19 @@ const BLogsComp = ({ size, q, currentPage }) => {
       .finally(() => {
         setLoading(false); // Stop loading
       });
+
+    axios
+      .get(
+        "https://newsapi.org/v2/top-headlines/sources?apiKey=0c925150fdad4ef191682bcd6072f75d"
+      )
+      .then((res) => {
+        console.log(res.data.sources);
+      });
   };
 
   useEffect(() => {
     getBlogs(); // Re-fetch data when `q`, `size`, or `currentPage` changes
-  }, [q, size, currentPage]);
+  }, [q, size, currentPage, category]);
 
   // Handle blog click and navigation
   const handleBlogClick = (blog) => {
@@ -93,12 +103,19 @@ const BLogsComp = ({ size, q, currentPage }) => {
             onClick={() => handleBlogClick(blog)}
           >
             <img
-              src={blog.urlToImage ? blog.urlToImage : blogImg}
-              alt="blogImg"
+              src={
+                blog.urlToImage &&
+                blog.urlToImage.trim() !== "" &&
+                blog.urlToImage !== "null"
+                  ? blog.urlToImage
+                  : "https://cdn.pixabay.com/photo/2016/01/31/16/34/blogging-1171731_1280.jpg"
+              }
+              alt={blog.title || "Default blog image"}
               className="w-full h-[300px] object-cover"
               loading="lazy"
               decoding="async"
             />
+
             <div className="p-4">
               <h3 className="text-slate-50 text-2xl font-bold text-center mb-2">
                 {blog.title}

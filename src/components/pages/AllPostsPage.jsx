@@ -5,44 +5,72 @@ import BLogsComp from "../util/BLogsComp";
 import ReactPaginate from "react-paginate";
 
 const AllPostsPage = () => {
+  // State to store the search query
   const [searchQuery, setSearchQuery] = useState("");
+
+  // State to track the current page number
   const [currentPage, setCurrentPage] = useState(0);
+
+  // State to control dropdown menu visibility
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
+  // State to store the currently selected category
+  const [categories, setCategories] = useState("");
+
   useEffect(() => {
-    // Initialize Flowbite dropdown using their data attributes
+    // Get dropdown menu and its button element
     const targetEl = document.getElementById("dropdown");
     const triggerEl = document.getElementById("dropdown-button");
 
+    // Check if elements exist
     if (targetEl && triggerEl) {
-      // Add click event listener to toggle dropdown
+      // Function to handle click events outside the dropdown
       const handleClick = (e) => {
+        // Close dropdown if click is outside the elements
         if (!targetEl.contains(e.target) && !triggerEl.contains(e.target)) {
           setDropdownOpen(false);
           targetEl.classList.add("hidden");
         }
       };
 
+      // Attach event listener to detect clicks outside the dropdown
       document.addEventListener("click", handleClick);
 
+      // Clean up the event listener on component unmount
       return () => {
         document.removeEventListener("click", handleClick);
       };
     }
   }, []);
 
+  // Handle the search input value change
   const handleSearch = (e) => {
     setSearchQuery(e.target.value);
   };
 
+  // Prevent the form from submitting
   const handleFormSubmit = (e) => {
     e.preventDefault();
   };
 
+  // Change the current page when a pagination link is clicked
   const handlePageClick = (event) => {
     setCurrentPage(event.selected);
   };
 
+  // Handle category selection from dropdown
+  const handleCategoryClick = (category) => {
+    setCategories((prevCategory) => {
+      if (prevCategory === category) {
+        return "";
+      } else {
+        return category;
+      }
+    });
+    setDropdownOpen(false);
+  };
+
+  // Toggle dropdown visibility
   const toggleDropdown = () => {
     const targetEl = document.getElementById("dropdown");
     if (targetEl) {
@@ -51,10 +79,9 @@ const AllPostsPage = () => {
     }
   };
 
-  const handleCategoryClick = (category) => {
-    console.log(`Selected category: ${category}`);
-    toggleDropdown();
-  };
+  useEffect(() => {
+    console.log(categories);
+  }, [categories]);
 
   return (
     <section>
@@ -69,7 +96,7 @@ const AllPostsPage = () => {
             onClick={toggleDropdown}
             className="flex-shrink-0 z-10 inline-flex items-center py-2.5 px-4 text-sm font-medium text-center text-gray-900 bg-gray-100 border border-gray-300 rounded-s-lg hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700 dark:text-white dark:border-gray-600 h-[40px] border-none"
           >
-            All categories
+            {categories === "" ? "All categories" : categories}
             <svg
               className={`w-2.5 h-2.5 ms-2.5 transform transition-transform duration-200 ${
                 dropdownOpen ? "rotate-180" : ""
@@ -96,7 +123,15 @@ const AllPostsPage = () => {
               className="py-2 text-sm text-gray-700 dark:text-gray-200"
               aria-labelledby="dropdown-button"
             >
-              {["Mockups", "Templates", "Design", "Logos"].map((category) => (
+              {[
+                "business",
+                "entertainment",
+                "general",
+                "health",
+                "science",
+                "sports",
+                "technology",
+              ].map((category) => (
                 <li key={category}>
                   <button
                     type="button"
@@ -131,7 +166,12 @@ const AllPostsPage = () => {
       </form>
 
       <div className="flex justify-center items-center mt-4">
-        <BLogsComp size={10} q={searchQuery} currentPage={currentPage} />
+        <BLogsComp
+          size={10}
+          q={searchQuery}
+          currentPage={currentPage}
+          category={categories}
+        />
       </div>
 
       <ReactPaginate
