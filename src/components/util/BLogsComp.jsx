@@ -1,56 +1,31 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import blogImg from "../../assets/blogImg.png";
-import axios from "axios";
+import { fetchBlogs } from "../../api/api";
 
 const BLogsComp = ({ size, q, currentPage, category }) => {
-  // State to manage blogs, loading, and errors
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   const navigate = useNavigate();
 
-  // Function to get blogs from the API
-  const getBlogs = () => {
-    setLoading(true); // Start loading
-    setError(null); // Reset error state
-
-    // Construct the API URL based on search query (q), size, and currentPage
-    let url = `https://newsapi.org/v2/top-headlines?country=us&pageSize=${size}&page=${
-      currentPage + 1
-    }&apiKey=${import.meta.env.VITE_API_KEY}`; // We use currentPage + 1 to match API's page numbering
-
-    if (q) {
-      url += `&q=${q}`; // Add `q` to the API request only if it has a value
+  const getBlogs = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const articles = await fetchBlogs({ size, currentPage, q, category });
+      // error handling
+      if (articles.length === 0) {
+        setError("No results found.");
+      } else {
+        setBlogs(articles);
+      }
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
     }
-    if (category) {
-      url += `&category=${category}`;
-    }
-    axios
-      .get(url)
-      .then((res) => {
-        const articles = res.data.articles || [];
-        if (articles.length === 0) {
-          setError("No results found."); // Set error message if no articles are returned
-        } else {
-          setBlogs(articles);
-        }
-      })
-      .catch(() => {
-        setError("An error occurred while fetching data."); // Handle API error
-      })
-      .finally(() => {
-        setLoading(false); // Stop loading
-      });
-
-    axios
-      .get(
-        "https://newsapi.org/v2/top-headlines/sources?apiKey=0c925150fdad4ef191682bcd6072f75d"
-      )
-      .then((res) => {
-        console.log(res.data.sources);
-      });
   };
 
   useEffect(() => {
@@ -65,12 +40,10 @@ const BLogsComp = ({ size, q, currentPage, category }) => {
     }
   }, [q, size, currentPage, category]);
 
-  // Handle blog click and navigation
   const handleBlogClick = (blog) => {
     navigate("/blog", { state: blog });
   };
 
-  // Loading Spinner
   if (loading) {
     return (
       <div role="status" className="flex justify-center items-center h-[400px]">
@@ -95,12 +68,10 @@ const BLogsComp = ({ size, q, currentPage, category }) => {
     );
   }
 
-  // Display error if any
   if (error) {
     return <div className="text-center text-red-500">{error}</div>;
   }
 
-  // Display the blogs
   return (
     <div className="grid gap-8 mt-[82px] sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 max-w-6xl mx-auto cursor-pointer">
       {blogs.length > 0 ? (
